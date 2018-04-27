@@ -74,8 +74,6 @@ public class GeneMyBatisRepositoryTest {
         Assert.assertEquals((Integer) 207, gene.getEntrezGeneId());
         Assert.assertEquals("AKT1", gene.getHugoGeneSymbol());
         Assert.assertEquals("protein-coding", gene.getType());
-        Assert.assertEquals("14q32.32", gene.getCytoband());
-        Assert.assertEquals((Integer) 10838, gene.getLength());
     }
 
     @Test
@@ -88,8 +86,6 @@ public class GeneMyBatisRepositoryTest {
         Assert.assertEquals((Integer) 207, gene.getEntrezGeneId());
         Assert.assertEquals("AKT1", gene.getHugoGeneSymbol());
         Assert.assertEquals("protein-coding", gene.getType());
-        Assert.assertEquals("14q32.32", gene.getCytoband());
-        Assert.assertEquals((Integer) 10838, gene.getLength());
     }
 
     @Test
@@ -139,8 +135,6 @@ public class GeneMyBatisRepositoryTest {
         Assert.assertEquals((Integer) 207, result.getEntrezGeneId());
         Assert.assertEquals("AKT1", result.getHugoGeneSymbol());
         Assert.assertEquals("protein-coding", result.getType());
-        Assert.assertEquals("14q32.32", result.getCytoband());
-        Assert.assertEquals((Integer) 10838, result.getLength());
     }
 
     @Test
@@ -159,8 +153,6 @@ public class GeneMyBatisRepositoryTest {
         Assert.assertEquals((Integer) 207, result.getEntrezGeneId());
         Assert.assertEquals("AKT1", result.getHugoGeneSymbol());
         Assert.assertEquals("protein-coding", result.getType());
-        Assert.assertEquals("14q32.32", result.getCytoband());
-        Assert.assertEquals((Integer) 10838, result.getLength());
     }
 
     @Test
@@ -213,8 +205,6 @@ public class GeneMyBatisRepositoryTest {
         Assert.assertEquals((Integer) 207, gene.getEntrezGeneId());
         Assert.assertEquals("AKT1", gene.getHugoGeneSymbol());
         Assert.assertEquals("protein-coding", gene.getType());
-        Assert.assertEquals("14q32.32", gene.getCytoband());
-        Assert.assertEquals((Integer) 10838, gene.getLength());
     }
 
     @Test
@@ -231,8 +221,6 @@ public class GeneMyBatisRepositoryTest {
         Assert.assertEquals((Integer) 207, gene.getEntrezGeneId());
         Assert.assertEquals("AKT1", gene.getHugoGeneSymbol());
         Assert.assertEquals("protein-coding", gene.getType());
-        Assert.assertEquals("14q32.32", gene.getCytoband());
-        Assert.assertEquals((Integer) 10838, gene.getLength());
     }
 
     @Test

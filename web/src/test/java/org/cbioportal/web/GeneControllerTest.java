@@ -86,15 +86,9 @@ public class GeneControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].entrezGeneId").value(ENTREZ_GENE_ID_1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].hugoGeneSymbol").value(HUGO_GENE_SYMBOL_1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].type").value(TYPE_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].cytoband").value(CYTOBAND_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].length").value(LENGTH_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].chromosome").value(CHROMOSOME_1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].entrezGeneId").value(ENTREZ_GENE_ID_2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].hugoGeneSymbol").value(HUGO_GENE_SYMBOL_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].type").value(TYPE_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].cytoband").value(CYTOBAND_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].length").value(LENGTH_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].chromosome").value(CHROMOSOME_2));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].type").value(TYPE_2));
 
     }
 
@@ -131,9 +125,6 @@ public class GeneControllerTest {
         gene.setEntrezGeneId(ENTREZ_GENE_ID_1);
         gene.setHugoGeneSymbol(HUGO_GENE_SYMBOL_1);
         gene.setType(TYPE_1);
-        gene.setCytoband(CYTOBAND_1);
-        gene.setLength(LENGTH_1);
-        gene.setChromosome(CHROMOSOME_1);
         geneList.add(gene);
 
         Mockito.when(geneService.getGene(Mockito.anyString())).thenReturn(gene);
@@ -144,10 +135,7 @@ public class GeneControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.entrezGeneId").value(ENTREZ_GENE_ID_1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.hugoGeneSymbol").value(HUGO_GENE_SYMBOL_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.type").value(TYPE_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.cytoband").value(CYTOBAND_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length").value(LENGTH_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.chromosome").value(CHROMOSOME_1));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.type").value(TYPE_1));
     }
 
     @Test
@@ -190,15 +178,9 @@ public class GeneControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].entrezGeneId").value(ENTREZ_GENE_ID_1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].hugoGeneSymbol").value(HUGO_GENE_SYMBOL_1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].type").value(TYPE_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].cytoband").value(CYTOBAND_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].length").value(LENGTH_1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].chromosome").value(CHROMOSOME_1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].entrezGeneId").value(ENTREZ_GENE_ID_2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].hugoGeneSymbol").value(HUGO_GENE_SYMBOL_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].type").value(TYPE_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].cytoband").value(CYTOBAND_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].length").value(LENGTH_2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].chromosome").value(CHROMOSOME_2));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].type").value(TYPE_2));
     }
 
     @Test
@@ -228,17 +210,11 @@ public class GeneControllerTest {
         gene1.setEntrezGeneId(ENTREZ_GENE_ID_1);
         gene1.setHugoGeneSymbol(HUGO_GENE_SYMBOL_1);
         gene1.setType(TYPE_1);
-        gene1.setCytoband(CYTOBAND_1);
-        gene1.setLength(LENGTH_1);
-        gene1.setChromosome(CHROMOSOME_1);
         geneList.add(gene1);
         Gene gene2 = new Gene();
         gene2.setEntrezGeneId(ENTREZ_GENE_ID_2);
         gene2.setHugoGeneSymbol(HUGO_GENE_SYMBOL_2);
         gene2.setType(TYPE_2);
-        gene2.setCytoband(CYTOBAND_2);
-        gene2.setLength(LENGTH_2);
-        gene2.setChromosome(CHROMOSOME_2);
         geneList.add(gene2);
         return geneList;
     }

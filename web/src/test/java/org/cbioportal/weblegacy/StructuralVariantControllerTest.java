@@ -288,15 +288,11 @@ public class StructuralVariantControllerTest {
         Gene geneERBB2 = new Gene();
         geneERBB2.setHugoGeneSymbol("ERBB2");
         geneERBB2.setEntrezGeneId(2064);
-        geneERBB2.setCytoband("17q12");
-        geneERBB2.setLength(10321);
         geneERBB2.setType("protein-coding");
         Gene geneGRB7 = new Gene();
         geneGRB7.setHugoGeneSymbol("GRB7");
         geneGRB7.setEntrezGeneId(2886);
         geneGRB7.setType("protein-coding");
-        geneGRB7.setCytoband("17q12");
-        geneGRB7.setLength(3597);
         StructuralVariant structuralVariant1 = new StructuralVariant();
         structuralVariant1.setSampleId(1);
         structuralVariant1.setSample(sample1);
@@ -434,12 +430,9 @@ public class StructuralVariantControllerTest {
         geneticProfile1.setName(null);
         geneticProfile1.setDescription(null);
         geneticProfile1.setShowProfileInAnalysisTab(null);
-        geneERBB2.setCytoband(null);
-        geneERBB2.setLength(null);
         geneERBB2.setType(null);
         geneGRB7.setType(null);
-        geneGRB7.setCytoband(null);
-        geneGRB7.setLength(null);
+
         structuralVariant1.setGeneticProfileId(null);
         structuralVariant2.setGeneticProfileId(null);
         structuralVariant3.setGeneticProfileId(null);

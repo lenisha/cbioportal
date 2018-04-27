@@ -5,6 +5,7 @@ import org.cbioportal.model.AlterationEnrichment;
 import org.cbioportal.model.AlterationCountByGene;
 import org.cbioportal.model.Gene;
 import org.cbioportal.service.GeneService;
+import org.cbioportal.service.impl.BaseServiceImplTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,12 +49,12 @@ public class AlterationEnrichmentUtilTest {
         Gene gene1 = new Gene();
         gene1.setEntrezGeneId(2);
         gene1.setHugoGeneSymbol("HUGO2");
-        gene1.setCytoband("CYTOBAND2");
+        gene1.setGeneticEntityId(2);
         genes.add(gene1);
         Gene gene2 = new Gene();
         gene2.setEntrezGeneId(3);
         gene2.setHugoGeneSymbol("HUGO3");
-        gene2.setCytoband("CYTOBAND3");
+        gene2.setGeneticEntityId(3);
         genes.add(gene2);
 
         Mockito.when(geneService.fetchGenes(Arrays.asList("2", "3"), "ENTREZ_GENE_ID", "SUMMARY")).thenReturn(genes);
@@ -88,7 +89,7 @@ public class AlterationEnrichmentUtilTest {
         AlterationEnrichment alterationEnrichment1 = result.get(0);
         Assert.assertEquals((Integer) 2, alterationEnrichment1.getEntrezGeneId());
         Assert.assertEquals("HUGO2", alterationEnrichment1.getHugoGeneSymbol());
-        Assert.assertEquals("CYTOBAND2", alterationEnrichment1.getCytoband());
+        Assert.assertEquals(null, alterationEnrichment1.getCytoband());
         Assert.assertEquals((Integer) 1, alterationEnrichment1.getSet1CountSummary().getAlteredCount());
         Assert.assertEquals((Integer) 2, alterationEnrichment1.getSet2CountSummary().getAlteredCount());
         Assert.assertEquals("-1.0", alterationEnrichment1.getLogRatio());
@@ -96,7 +97,7 @@ public class AlterationEnrichmentUtilTest {
         AlterationEnrichment alterationEnrichment2 = result.get(1);
         Assert.assertEquals((Integer) 3, alterationEnrichment2.getEntrezGeneId());
         Assert.assertEquals("HUGO3", alterationEnrichment2.getHugoGeneSymbol());
-        Assert.assertEquals("CYTOBAND3", alterationEnrichment2.getCytoband());
+        Assert.assertEquals(null, alterationEnrichment2.getCytoband());
         Assert.assertEquals((Integer) 2, alterationEnrichment2.getSet1CountSummary().getAlteredCount());
         Assert.assertEquals((Integer) 0, alterationEnrichment2.getSet2CountSummary().getAlteredCount());
         Assert.assertEquals("Infinity", alterationEnrichment2.getLogRatio());
