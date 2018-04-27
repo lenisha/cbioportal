@@ -186,13 +186,10 @@ public class PfamSequenceServlet extends HttpServlet
 		CanonicalGene gene = DaoGeneOptimized.getInstance().getGene(hugoGeneSymbol);
 		JSONArray data = new JSONArray();
 
-		if (gene != null && gene.getLength() > 0)
+		if (gene != null )
 		{
-			int length = gene.getLength() / 3;
-
 			JSONObject dummy = new JSONObject();
 			dummy.put("markups", new JSONArray());
-			dummy.put("length", length);
 			dummy.put("regions", new JSONArray());
 			dummy.put("motifs", new JSONArray());
 			dummy.put("metadata", new JSONObject());
