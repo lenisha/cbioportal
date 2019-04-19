@@ -152,7 +152,7 @@ public class ImportExtendedMutationData{
                     String referenceGenome = cancerStudy.getReferenceGenome();
                     genomeBuildName = DaoReferenceGenome.getReferenceGenomeByGenomeName(referenceGenome).getBuildName();
                 } catch (NullPointerException e) {
-                    genomeBuildName = ReferenceGenome.HOMO_SAPIENS_DEFAULT_GENOME_BUILD;
+                    genomeBuildName = GlobalProperties.DEFAULT_UCSC_BUILD;
                 }
 
                 if (!record.getNcbiBuild().equalsIgnoreCase(genomeBuildName)) {
@@ -310,7 +310,7 @@ public class ImportExtendedMutationData{
                 if (gene == null &&
                         !(geneSymbol.equals("") ||
                           geneSymbol.equals("Unknown"))) {
-                    gene = daoGene.getNonAmbiguousGene(geneSymbol, chr);
+                    gene = daoGene.getNonAmbiguousGene(geneSymbol, true);
                 }
 
                 // assume symbol=Unknown and entrez=0 (or missing Entrez column) to imply an

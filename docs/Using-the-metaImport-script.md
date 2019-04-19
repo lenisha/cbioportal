@@ -10,7 +10,7 @@ and then run the following command:
 ```
 This will tell you the parameters you can use:
 ```
- $./metaImport.py  -h
+$./metaImport.py -h
 usage: metaImport.py [-h] -s STUDY_DIRECTORY
                      [-u URL_SERVER | -p PORTAL_INFO_DIR | -n]
                      [-species SPECIES] [-genome REFERENCE_GENOME]

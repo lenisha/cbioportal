@@ -431,16 +431,16 @@ Validation of study succeeded with warnings.
 When importing a study, the validator assumes by default that the following three parameters 
 `--species` , `--reference_genome` , `--genome_build` are set to the following:
 ```
---species human
---reference_genome hg19
---genome_build 37
+--species=human
+--reference_genome=hg19
+--genome_build=37
 ```
 
 cBioPortal is gradually introducing support for mouse. If you want to load mouse studies and you have [set up your database for mouse](Import-the-Seed-Database.md#download-the-cbioportal-database), you should set the previous parameters to:
 ```
---species mouse
---reference_genome mm10
---genome_build 38
+--species=mouse
+--reference_genome=mm10
+--genome_build=38
 ```
 
 As an example, the command for the mouse example using the three parameters is given:

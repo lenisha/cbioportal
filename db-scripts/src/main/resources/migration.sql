@@ -417,15 +417,6 @@ CREATE TABLE `reference_genome_gene` (
     FOREIGN KEY (`ENTREZ_GENE_ID`) REFERENCES `gene` (`ENTREZ_GENE_ID`) ON DELETE CASCADE
 );
 
-INSERT INTO reference_genome_gene (ENTREZ_GENE_ID, CYTOBAND, EXONIC_LENGTH, CHR, REFERENCE_GENOME_ID)
-(SELECT
-	ENTREZ_GENE_ID,
-	CYTOBAND,
-	LENGTH,
-    SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(gene.CYTOBAND,IF(LOCATE('p', gene.CYTOBAND), 'p', 'q'), 1),'q',1),'cen',1),
-	1
-FROM `gene`);
-
 UPDATE info SET DB_SCHEMA_VERSION="2.4.1";
 -- ========================= end of reference genes related tables ========================================================================
 
@@ -601,6 +592,15 @@ CREATE TABLE `data_access_tokens` (
 UPDATE `info` SET `DB_SCHEMA_VERSION`="2.9.0";
 
 ##version: 2.10.0
+INSERT INTO reference_genome_gene (ENTREZ_GENE_ID, CYTOBAND, EXONIC_LENGTH, CHR, REFERENCE_GENOME_ID)
+SELECT
+    ENTREZ_GENE_ID,
+    CYTOBAND,
+    LENGTH,
+    SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(gene.CYTOBAND,IF(LOCATE('p', gene.CYTOBAND), 'p', 'q'), 1),'q',1),'cen',1),
+    1
+FROM `gene`
+WHERE NOT EXISTS (SELECT * FROM reference_genome_gene);
 ALTER TABLE `gene` DROP COLUMN `CYTOBAND`, DROP COLUMN `LENGTH`;
 ALTER TABLE `cancer_study` ADD COLUMN `REFERENCE_GENOME_ID` INT(4) DEFAULT 1,
                            ADD CONSTRAINT `FK_REFERENCE_GENOME` FOREIGN KEY (`REFERENCE_GENOME_ID`)

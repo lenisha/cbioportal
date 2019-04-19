@@ -279,7 +279,7 @@ public class ImportGeneData extends ConsoleRunnable {
         //Set the variables needed for the method
         FileReader reader = new FileReader(geneFile);
         BufferedReader buf = new BufferedReader(reader);
-        int referenceGenomeId = DaoReferenceGenome.getReferenceGenomeIdByName(genomeBuild, species);
+        int referenceGenomeId = DaoReferenceGenome.getReferenceGenomeIdByName(genomeBuild);
         String line;
         ProgressMonitor.setCurrentMessage("\nUpdating gene lengths... \n"); //Display a message in the console
         boolean geneUpdated = false;
@@ -387,7 +387,7 @@ public class ImportGeneData extends ConsoleRunnable {
         DaoGeneOptimized daoGeneOptimized = DaoGeneOptimized.getInstance();
         boolean lengthUpdated = false;
         /// Check if the gene is in the database
-        CanonicalGene gene = daoGeneOptimized.getNonAmbiguousGene(symbol, chromosome, false); //Identify unambiguously the gene (with the symbol and the chromosome)
+        CanonicalGene gene = daoGeneOptimized.getNonAmbiguousGene(symbol, false); //Identify unambiguously the gene (with the symbol and the chromosome)
         DaoReferenceGenomeGene daoReferenceGenomeGene = DaoReferenceGenomeGene.getInstance();
         ReferenceGenomeGene refGene = DaoReferenceGenomeGene.getInstance().getGene(gene.getEntrezGeneId(), refreneceGenomeId);
         /// If it's not in the database, don't add it

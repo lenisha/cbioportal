@@ -67,10 +67,6 @@ public class TestImportGeneData {
     public void testImportGeneData() throws Exception {
         DaoGeneOptimized daoGene = DaoGeneOptimized.getInstance();
         ProgressMonitor.setConsoleMode(false);
-	
-        /* those isoforms from MSKCC clinical bioinformatics pipeline need to be manually added 
-        File file = new File("src/test/resources/supp-genes.txt");
-        ImportGeneData.importSuppGeneData(file, ReferenceGenome.HOMO_SAPIENS_DEFAULT_GENOME_BUILD);*/
         
         File file = new File("src/test/resources/genes_test.txt");
         ImportGeneData.importData(file);
@@ -106,24 +102,19 @@ public class TestImportGeneData {
         File file = new File("src/test/resources/gene-length_test.txt");
         ImportGeneData.importGeneLength(file,ReferenceGenome.HOMO_SAPIENS_DEFAULT_GENOME_BUILD, 
             ReferenceGenome.HOMO_SAPIENS,false);
-        CanonicalGene gene = daoGene.getNonAmbiguousGene("ABCA4", "chr1", false);
-        refGene = DaoReferenceGenomeGene.getInstance().getGene("ABCA4",1);
-        //assertEquals(372,gene.getLength());
+        CanonicalGene gene = daoGene.getNonAmbiguousGene("ABCA4", false);
+        refGene = DaoReferenceGenomeGene.getInstance().getGene(gene.getEntrezGeneId(),1);
 
-        gene = daoGene.getNonAmbiguousGene("AACP", "chr8", false);
-        refGene = DaoReferenceGenomeGene.getInstance().getGene("AACP",1);
-        //assertEquals(16267,gene.getLength());
+        gene = daoGene.getNonAmbiguousGene("AACP", false);
+        refGene = DaoReferenceGenomeGene.getInstance().getGene(gene.getEntrezGeneId(),1);
+
+        gene = daoGene.getNonAmbiguousGene("AARS", false);
+        refGene = DaoReferenceGenomeGene.getInstance().getGene(gene.getEntrezGeneId(),1);
         
-        gene = daoGene.getNonAmbiguousGene("AARS", "chr16", false);
-        refGene = DaoReferenceGenomeGene.getInstance().getGene("AARS",1);
-        //assertEquals(1163,gene.getLength());
+        gene = daoGene.getNonAmbiguousGene("AGER", false);
+        refGene = DaoReferenceGenomeGene.getInstance().getGene(gene.getEntrezGeneId(),1);
         
-        gene = daoGene.getNonAmbiguousGene("AGER", "chr6", false);
-        refGene = DaoReferenceGenomeGene.getInstance().getGene("AGER",1);
-        //assertEquals(1001,gene.getLength());
-        
-        gene = daoGene.getNonAmbiguousGene("MED28P8", "chr4", false);
-        refGene = DaoReferenceGenomeGene.getInstance().getGene("MED28P8",1);
-        //assertEquals(201,gene.getLength());
+        gene = daoGene.getNonAmbiguousGene("MED28P8", false);
+        refGene = DaoReferenceGenomeGene.getInstance().getGene(gene.getEntrezGeneId(),1);
     }
 }

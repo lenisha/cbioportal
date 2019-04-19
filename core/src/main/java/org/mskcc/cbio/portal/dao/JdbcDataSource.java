@@ -13,13 +13,14 @@ public class JdbcDataSource extends BasicDataSource {
         String host = dbProperties.getDbHost();
         String userName = dbProperties.getDbUser();
         String password = dbProperties.getDbPassword();
+        String mysqlDriverClassName = dbProperties.getDbDriverClassName();
         String database = dbProperties.getDbName();
         String useSSL = (!StringUtils.isBlank(dbProperties.getDbUseSSL())) ? dbProperties.getDbUseSSL() : "false";
         String url ="jdbc:mysql://" + host + "/" + database +
                         "?user=" + userName + "&password=" + password +
                         "&zeroDateTimeBehavior=convertToNull&useSSL=" + useSSL;
         //  Set up poolable data source
-        this.setDriverClassName("com.mysql.jdbc.Driver");
+        this.setDriverClassName(mysqlDriverClassName);
         this.setUsername(userName);
         this.setPassword(password);
         this.setUrl(url);

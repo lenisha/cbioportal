@@ -79,7 +79,6 @@ public class AlterationEnrichmentUtil {
         alterationEnrichment.setSet2CountSummary(set2CountSummary);
         alterationEnrichment.setEntrezGeneId(alterationCountByGene.getEntrezGeneId());
         alterationEnrichment.setHugoGeneSymbol(gene.getHugoGeneSymbol());
-        //alterationEnrichment.setCytoband(gene.getCytoband()); //set value at the frontend
         assignLogRatio(alterationEnrichment, molecularProfileCaseSet1Count, molecularProfileCaseSet2Count);
         assignPValue(alterationEnrichment, molecularProfileCaseSet1Count, molecularProfileCaseSet2Count);
         return alterationEnrichment;
