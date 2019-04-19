@@ -123,8 +123,7 @@ CREATE TABLE `reference_genome` (
     `URL` varchar(256) NOT NULL,
     `RELEASE_DATE` datetime DEFAULT NULL,
     PRIMARY KEY (`REFERENCE_GENOME_ID`),
-    UNIQUE INDEX `BUILD_NAME_UNIQUE` (`BUILD_NAME` ASC),
-    CHECK(`SPECIES` = 'human')
+    UNIQUE INDEX `BUILD_NAME_UNIQUE` (`BUILD_NAME` ASC)
 );
 
 -- --------------------------------------------------------
@@ -836,4 +835,4 @@ CREATE TABLE `info` (
   `GENESET_VERSION` varchar(24)
 );
 -- THIS MUST BE KEPT IN SYNC WITH db.version PROPERTY IN pom.xml
-INSERT INTO info VALUES ('2.9.1', NULL);
+INSERT INTO info VALUES ('2.10.0', NULL);

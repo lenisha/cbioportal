@@ -107,7 +107,7 @@ public class CancerStudyReader {
         cancerStudy.setShortName(shortName);
         String referenceGenome = properties.getProperty("reference_genome");
         if (referenceGenome == null) {
-            referenceGenome = ReferenceGenome.HOMO_SAPIENS_DEFAULT_GENOME_NAME;
+            referenceGenome = GlobalProperties.getReferenceGenomeName();
         }
         cancerStudy.setReferenceGenome(referenceGenome);
 

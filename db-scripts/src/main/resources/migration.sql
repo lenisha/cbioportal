@@ -400,13 +400,13 @@ INSERT INTO `reference_genome`
 VALUES (1, 'human', 'hg19', 'GRCh37', 2897310462, 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips', '2009-02-01');
 INSERT INTO `reference_genome` 
 VALUES (2, 'human', 'hg38', 'GRCh38', 3049315783, 'http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips', '2013-12-01');
--- INSERT INTO `reference_genome` 
--- VALUES (3, 'mouse', 'mm10', 'GRCm38', 2652783500, 'http://hgdownload.cse.ucsc.edu//goldenPath/mm10/bigZips', '2012-01-01');
+INSERT INTO `reference_genome` 
+VALUES (3, 'mouse', 'mm10', 'GRCm38', 2652783500, 'http://hgdownload.cse.ucsc.edu//goldenPath/mm10/bigZips', '2012-01-01');
 
 CREATE TABLE `reference_genome_gene` (
     `ENTREZ_GENE_ID` int(11) NOT NULL,
     `REFERENCE_GENOME_ID` int(4) NOT NULL,
-    `CHR` varchar(4) DEFAULT NULL,
+    `CHR` varchar(5) DEFAULT NULL,
     `CYTOBAND` varchar(64) DEFAULT NULL,
     `EXONIC_LENGTH` int(11) DEFAULT NULL,
     `START` bigint(20) DEFAULT NULL,
@@ -599,3 +599,24 @@ CREATE TABLE `data_access_tokens` (
     FOREIGN KEY (`USERNAME`) REFERENCES `users` (`EMAIL`) ON DELETE CASCADE
 );
 UPDATE `info` SET `DB_SCHEMA_VERSION`="2.9.0";
+
+##version: 2.10.0
+INSERT INTO reference_genome_gene (ENTREZ_GENE_ID, CYTOBAND, EXONIC_LENGTH, CHR, REFERENCE_GENOME_ID)
+SELECT
+    ENTREZ_GENE_ID,
+    CYTOBAND,
+    LENGTH,
+    SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(gene.CYTOBAND,IF(LOCATE('p', gene.CYTOBAND), 'p', 'q'), 1),'q',1),'cen',1),
+    1
+FROM `gene`
+WHERE NOT EXISTS (SELECT * FROM reference_genome_gene);
+ALTER TABLE `gene` DROP COLUMN `CYTOBAND`, DROP COLUMN `LENGTH`;
+ALTER TABLE `cancer_study` ADD COLUMN `REFERENCE_GENOME_ID` INT(4) DEFAULT 1,
+                           ADD CONSTRAINT `FK_REFERENCE_GENOME` FOREIGN KEY (`REFERENCE_GENOME_ID`)
+                               REFERENCES `reference_genome`(`REFERENCE_GENOME_ID`) ON DELETE CASCADE;
+UPDATE `cancer_study`
+    INNER JOIN `genetic_profile` ON `cancer_study`.CANCER_STUDY_ID = `genetic_profile`.CANCER_STUDY_ID
+    INNER JOIN `mutation` ON `mutation`.GENETIC_PROFILE_ID = `genetic_profile`.GENETIC_PROFILE_ID
+    INNER JOIN `mutation_event` ON `mutation`.MUTATION_EVENT_ID = `mutation_event`.MUTATION_EVENT_ID
+SET `cancer_study`.REFERENCE_GENOME_ID = IF(`mutation_event`.NCBI_BUILD in ('37', 'hg19','GRCh37'), 1, 2);
+UPDATE `info` SET `DB_SCHEMA_VERSION`="2.10.0";
