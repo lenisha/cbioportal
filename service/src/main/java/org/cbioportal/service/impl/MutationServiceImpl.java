@@ -138,6 +138,37 @@ public class MutationServiceImpl implements MutationService {
 	}
 
     @Override
+    public List<MutationCountByGene> getSampleCountInMultipleMolecularProfilesForMutation(List<String> molecularProfileIds,
+                                                                               List<String> sampleIds, 
+                                                                               List<Integer> entrezGeneIds) {
+        List<MutationCountByGene> result;
+        if (molecularProfileIds.isEmpty()) {
+            result = Collections.emptyList();
+        } else {
+            result = mutationRepository.getSampleCountInMultipleMolecularProfilesForMutationOrFusion(
+                molecularProfileIds, sampleIds, entrezGeneIds, false);
+            geneFrequencyCalculator.calculate(molecularProfileIds, sampleIds, result);
+        }
+        return result;
+    }
+
+    @Override
+    public List<MutationCountByGene> getSampleCountInMultipleMolecularProfilesForFusion(List<String> molecularProfileIds,
+                                                                                        List<String> sampleIds,
+                                                                                        List<Integer> entrezGeneIds) {
+
+        List<MutationCountByGene> result;
+        if (molecularProfileIds.isEmpty()) {
+            result = Collections.emptyList();
+        } else {
+            result = mutationRepository.getSampleCountInMultipleMolecularProfilesForMutationOrFusion(
+                molecularProfileIds, sampleIds, entrezGeneIds,true);
+        }
+
+        return result;
+    }
+    
+    @Override
     public List<MutationCountByGene> getPatientCountByEntrezGeneIdsAndSampleIds(String molecularProfileId,
                                                                                 List<String> patientIds,
                                                                                 List<Integer> entrezGeneIds)

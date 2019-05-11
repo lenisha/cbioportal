@@ -48,6 +48,14 @@ public interface MutationService {
                                                                         List<Integer> entrezGeneIds,
                                                                         boolean includeFrequency);
 
+    List<MutationCountByGene> getSampleCountInMultipleMolecularProfilesForMutation(List<String> molecularProfileIds,
+                                                                        List<String> sampleIds,
+                                                                        List<Integer> entrezGeneId);
+
+    List<MutationCountByGene> getSampleCountInMultipleMolecularProfilesForFusion(List<String> molecularProfileIds,
+                                                                                 List<String> sampleIds,
+                                                                                 List<Integer> entrezGeneId);
+    
     List<MutationCountByGene> getPatientCountByEntrezGeneIdsAndSampleIds(String molecularProfileId,
                                                                         List<String> patientIds,
                                                                         List<Integer> entrezGeneIds)
