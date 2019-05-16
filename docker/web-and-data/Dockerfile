@@ -1,0 +1,57 @@
+# This image includes both the web app and the data import related scripts in
+# one image. Because of historic reasons some of these scripts run java
+# artifacts under the hood. It therefore currently makes more sense to have a
+# single image supporting both instead of moving the scripts out to a separate
+# container.
+FROM maven:3.5.4 as builder-java
+COPY $PWD /cbioportal
+WORKDIR /cbioportal
+RUN mvn -DskipTests clean install
+
+# Build python dependencies and cache them
+FROM python:3-alpine as builder-py
+RUN mkdir -p /install
+WORKDIR /install
+
+
+COPY --from=buildjava /cbioportal/requirements.txt /install/requirements.txt
+# install build and runtime dependencies
+# ignore update failures
+RUN pip3 install --install-option="--prefix=/install" -r /install/requirements.txt
+
+#Copy Java and Python to reulting  image
+FROM python:3-alpine as base
+
+# Add JRE
+# Default to UTF-8 file.encoding
+ENV LANG C.UTF-8
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/jre
+ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
+ENV JAVA_VERSION 8u212
+ENV JAVA_ALPINE_VERSION 8.212.04-r0
+RUN set -x \
+	&& apk add --no-cache \
+		openjdk8-jre="$JAVA_ALPINE_VERSION" \
+	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libmysqlclient && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/*
+
+#Copy python libraries
+COPY --from=builder-py /install /usr/local
+#Copy scripsts and java libs
+RUN mkdir -p /cbioportal
+COPY --from=builder-java /cbioportal/portal/target/scripts*.jar /scripts.jar
+# copy over core jar and scripts
+COPY --from=builder-java /cbioportal/core /cbioportal/core
+COPY --from=builder-java /cbioportal/scripts /cbioportal/scripts
+# add importer scripts to PATH for easy running in containers
+RUN find /cbioportal/core/src/main/scripts/ -type f -executable \! -name '*.pl'  -print0 | xargs -0 -- ln -st /usr/local/bin
+
+# put config files in this folder if you want to override config
+ENV PORTAL_HOME=/cbioportal
+
+# TODO: fix the workdir-dependent references to '../scripts/env.pl' and do this:
+# RUN find $PWD/core/src/main/scripts/ -type f -executable \! \( -name env.pl -o -name envSimple.pl \)  -print0 | xargs -0 -- ln -st /usr/local/bin
