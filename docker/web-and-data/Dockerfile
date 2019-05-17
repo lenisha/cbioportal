@@ -28,7 +28,7 @@ RUN   apt-get update  \
 
 
 COPY --from=build /cbioportal/requirements.txt /cbioportal/requirements.txt
-RUN  pip3 install -r /cbioportal/requirements.txt
+RUN  pip3 install --no-cache-dir -r /cbioportal/requirements.txt
 
 
 # copy over core jar and scripts
