@@ -9,52 +9,57 @@ WORKDIR /cbioportal
 RUN mvn -DskipTests clean install
 
 # Build python dependencies and cache them
-FROM python:3-alpine as base
-RUN mkdir -p /cbioportal
-WORKDIR /cbioportal
-# Add mysql
+FROM python:3-alpine as builder-py
+RUN mkdir -p /install
+WORKDIR /install
+
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps \
             gcc \
+            make \
             libc-dev \
+            musl-dev \
+            linux-headers \
+            pcre-dev \
             mysql-client \
     && apk add --no-cache mariadb-dev \
     && sed '/st_mysql_options options;/a unsigned int reconnect;' /usr/include/mysql/mysql.h -i.bkp 
 
-COPY --from=builder-java /cbioportal/requirements.txt /cbioportal/requirements.txt
+COPY --from=builder-java /cbioportal/requirements.txt /install/requirements.txt
 # install build and runtime dependencies
 # ignore update failures
-RUN pip3 install -r /cbioportal/requirements.txt
+RUN pip3 install --install-option="--prefix=/install" -r /install/requirements.txt
+
+#Copy Java and Python to reulting  image
+FROM python:3-alpine as base
+
 # Add JRE
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
-
-# add a simple script that can auto-detect the appropriate JAVA_HOME value
-# based on whether the JDK or only the JRE is installed
-RUN { \
-		echo '#!/bin/sh'; \
-		echo 'set -e'; \
-		echo; \
-		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
-	} > /usr/local/bin/docker-java-home \
-	&& chmod +x /usr/local/bin/docker-java-home
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/jre
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
-
 ENV JAVA_VERSION 8u212
 ENV JAVA_ALPINE_VERSION 8.212.04-r0
-
 RUN set -x \
 	&& apk add --no-cache \
 		openjdk8-jre="$JAVA_ALPINE_VERSION" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libmysqlclient && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/*
 
+#Copy python libraries
+COPY --from=builder-py /install /usr/local
+#Copy scripsts and java libs
+RUN mkdir -p /cbioportal
+COPY --from=builder-java /cbioportal/portal/target/scripts*.jar /scripts.jar
 # copy over core jar and scripts
 COPY --from=builder-java /cbioportal/core /cbioportal/core
 COPY --from=builder-java /cbioportal/scripts /cbioportal/scripts
 # add importer scripts to PATH for easy running in containers
-#RUN find /cbioportal/core/src/main/scripts/ -type f -name '*.pl'  -print0 | xargs -0 -- ln -sv /usr/local/bin
+RUN find /cbioportal/core/src/main/scripts/ -type f -executable \! -name '*.pl'  -print0 | xargs -0 -- ln -st /usr/local/bin
 
 # put config files in this folder if you want to override config
 ENV PORTAL_HOME=/cbioportal

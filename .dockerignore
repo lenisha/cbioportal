@@ -1,7 +1,7 @@
 */target/*
 *target*
 docker/*
-.git
+#.git
 .github
 .project
 .pydevproject
