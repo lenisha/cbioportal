@@ -67,7 +67,6 @@ public class ReferenceGenomeGeneMyBatisRepositoryTest {
         Assert.assertEquals("AKT1", gene.getHugoGeneSymbol());
     }
     
-
     @Test
     public void getReferenceGenomeGene() throws Exception {
         String genomeName = ReferenceGenome.HOMO_SAPIENS_DEFAULT_GENOME_NAME;

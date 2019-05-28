@@ -142,6 +142,15 @@ public class ImportExtendedMutationData{
             ProgressMonitor.incrementCurValue();
             ConsoleUtil.showProgress();
 
+            CancerStudy cancerStudy = DaoCancerStudy.getCancerStudyByInternalId(geneticProfile.getCancerStudyId());
+            String genomeBuildName;
+            try {
+                String referenceGenome = cancerStudy.getReferenceGenome();
+                genomeBuildName = DaoReferenceGenome.getReferenceGenomeByGenomeName(referenceGenome).getBuildName();
+            } catch (NullPointerException e) {
+                genomeBuildName = GlobalProperties.getReferenceGenomeName();
+            }
+            
             if( !line.startsWith("#") && line.trim().length() > 0)
             {
                 String[] parts = line.split("\t", -1 ); // the -1 keeps trailing empty strings; see JavaDoc for String

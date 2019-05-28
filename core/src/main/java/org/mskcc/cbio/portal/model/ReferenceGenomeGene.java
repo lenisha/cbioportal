@@ -125,5 +125,4 @@ public class ReferenceGenomeGene {
         result = 31 * result + this.referenceGenomeId;
         return result;
     }
-
 }

@@ -185,7 +185,11 @@ public final class DaoReferenceGenome {
             pstmt.setString(5, referenceGenome.getUrl());
             pstmt.setDate(6, new java.sql.Date(referenceGenome.getReleaseDate().getTime()));
             pstmt.setInt(7, referenceGenome.getReferenceGenomeId());
+<<<<<<< HEAD
             if (pstmt.executeUpdate() != -1) {
+=======
+            if (pstmt.executeUpdate() != 0) {
+>>>>>>> 83f4c918e12ec83121a1821a42044abcd33fe4ab
                 // update reference cache
                 reCache();
             }
